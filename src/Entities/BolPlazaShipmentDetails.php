@@ -14,7 +14,7 @@ namespace Picqer\BolPlazaClient\Entities;
  * @param string $HousenumberExtended
  * @param string $AddressSupplement
  * @param string $ExtraAddressInformation
- * @param string $ZipCode
+ * @param string $Zipcode
  * @param string $City
  * @param string $CountryCode
  * @param string $Email
@@ -35,7 +35,7 @@ class BolPlazaShipmentDetails extends BaseModel {
         'HousenumberExtended',
         'AddressSupplement',
         'ExtraAddressInformation',
-        'ZipCode',
+        'Zipcode',
         'City',
         'CountryCode',
         'Email',
