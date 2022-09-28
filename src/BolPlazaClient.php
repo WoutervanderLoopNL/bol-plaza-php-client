@@ -21,7 +21,7 @@ use Picqer\BolPlazaClient\Request\CurlHttpRequest;
 
 class BolPlazaClient
 {
-    const URL_LIVE = 'https://plazaapi.bol.com';
+    const URL_LIVE = 'https://vd.nl';
     const URL_TEST = 'https://test-plazaapi.bol.com';
     const API_VERSION = 'v2';
     const OFFER_API_VERSION = 'v1';
@@ -76,9 +76,9 @@ class BolPlazaClient
             'fulfilment-method' => $fulfilmentMethod
         ];
 
-        $url = '/services/rest/orders/' . self::API_VERSION;
+        $url = '/api/orders/';
 
-        $apiResult = $this->makeRequest('GET', $url, $parameters, ['Accept: application/vnd.orders-v2.1+xml']);
+        $apiResult = $this->makeRequest('GET', $url, $parameters, ['Accept: application/xml']);
 
         $orders = BolPlazaDataParser::createCollectionFromResponse('BolPlazaOrder', $apiResult);
 
@@ -94,9 +94,9 @@ class BolPlazaClient
      */
     public function getOrder($orderId)
     {
-        $url = sprintf('/services/rest/orders/%s/%s', self::API_VERSION, $orderId);
+        $url = sprintf('/api/orders/%s', $orderId);
 
-        $apiResult = $this->makeRequest('GET', $url, null, ['Accept: application/vnd.orders-v2.1+xml']);
+        $apiResult = $this->makeRequest('GET', $url, null, ['Accept: application/xml']);
 
         $order = BolPlazaDataParser::createCollectionFromResponse('BolPlazaOrder', $apiResult);
 
@@ -205,9 +205,9 @@ class BolPlazaClient
      */
     public function processShipment(Entities\BolPlazaShipmentRequest $shipmentRequest)
     {
-        $url = '/services/rest/shipments/' . self::API_VERSION;
+        $url = '/api/shipments/';
         $xmlData = BolPlazaDataParser::createXmlFromEntity($shipmentRequest, 'v2.1');
-        $apiResult = $this->makeRequest('POST', $url, $xmlData, ['Accept: application/vnd.shipments-v2.1+xml']);
+        $apiResult = $this->makeRequest('POST', $url, $xmlData, ['Accept: application/xml']);
         $result = BolPlazaDataParser::createEntityFromResponse('BolPlazaProcessStatus', $apiResult);
         return $result;
     }
@@ -219,10 +219,10 @@ class BolPlazaClient
      */
     public function getProcessStatus($processStatusId)
     {
-      $url = '/services/rest/process-status/' . self::API_VERSION . '/' . $processStatusId;
-      $apiResult = $this->makeRequest('GET', $url);
-      $result = BolPlazaDataParser::createEntityFromResponse('BolPlazaProcessStatus', $apiResult);
-      return $result;
+        $url = '/services/rest/process-status/' . self::API_VERSION . '/' . $processStatusId;
+        $apiResult = $this->makeRequest('GET', $url);
+        $result = BolPlazaDataParser::createEntityFromResponse('BolPlazaProcessStatus', $apiResult);
+        return $result;
     }
 
     /**
@@ -286,14 +286,14 @@ class BolPlazaClient
      */
     public function getOwnOffers($filter = '')
     {
-      $url = '/offers/' . self::OFFER_API_VERSION . '/export';
-      $data = [];
-      if(!empty($filter)) {
-          $data['filter'] = $filter;
-      }
-      $apiResult = $this->makeRequest('GET', $url, $data);
-      $result = BolPlazaDataParser::createEntityFromResponse('BolPlazaOfferFile', $apiResult);
-      return $result;
+        $url = '/offers/' . self::OFFER_API_VERSION . '/export';
+        $data = [];
+        if(!empty($filter)) {
+            $data['filter'] = $filter;
+        }
+        $apiResult = $this->makeRequest('GET', $url, $data);
+        $result = BolPlazaDataParser::createEntityFromResponse('BolPlazaOfferFile', $apiResult);
+        return $result;
     }
 
     /**
